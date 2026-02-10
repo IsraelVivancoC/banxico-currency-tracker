@@ -1,8 +1,8 @@
-package com.israelivancoc.service;
+package com.israelvivancoc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.israelivancoc.model.BanxicoResponse;
-import com.israelivancoc.model.DataPoint;
+import com.israelvivancoc.model.BanxicoResponse;
+import com.israelvivancoc.model.DataPoint;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

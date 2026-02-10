@@ -1,6 +1,6 @@
-package com.israelivancoc;
+package com.israelvivancoc;
 
-import com.israelivancoc.service.BanxicoService;
+import com.israelvivancoc.service.BanxicoService;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {

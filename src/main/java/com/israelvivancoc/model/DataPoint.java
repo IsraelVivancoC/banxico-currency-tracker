@@ -1,4 +1,4 @@
-package com.israelivancoc.model;
+package com.israelvivancoc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
