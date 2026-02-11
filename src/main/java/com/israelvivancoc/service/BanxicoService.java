@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 public class BanxicoService {
     private final String token;
     private final HttpClient client;
-    private final ObjectMapper mapper; // El traductor de JSON
+    private final ObjectMapper mapper;
 
     public BanxicoService(String token) {
         this.token = token;
@@ -19,7 +19,8 @@ public class BanxicoService {
         this.mapper = new ObjectMapper();
     }
 
-    public void fetchExchangeRate() {
+    // CAMBIO: Ahora devuelve un DataPoint en lugar de ser void
+    public DataPoint fetchExchangeRate() {
         String url = "https://www.banxico.org.mx/SieAPIRest/service/v1/series/SF43718/datos/oportuno";
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -33,10 +34,7 @@ public class BanxicoService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                // Aquí ocurre la magia de Jackson
                 BanxicoResponse result = mapper.readValue(response.body(), BanxicoResponse.class);
-
-                // Navegamos por el "laberinto" del JSON de Banxico
                 DataPoint lastPoint = result.getBmx().get("series").get(0).getDatos().get(0);
 
                 System.out.println("------------------------------------------");
@@ -44,12 +42,15 @@ public class BanxicoService {
                 System.out.println("Fecha: " + lastPoint.getFecha());
                 System.out.println("Precio: $" + lastPoint.getDato() + " MXN");
                 System.out.println("------------------------------------------");
+
+                return lastPoint; // retorno del objeto
             } else {
                 System.out.println(" Error del servidor: " + response.statusCode());
             }
         } catch (Exception e) {
             System.out.println(" Error al procesar datos: " + e.getMessage());
-            e.printStackTrace(); // Esto ayuda a ver si Jackson falló en algo
+            e.printStackTrace();
         }
+        return null; // Si algo falla, devolvemos un null
     }
 }
