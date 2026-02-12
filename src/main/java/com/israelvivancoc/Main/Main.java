@@ -1,8 +1,9 @@
 package com.israelvivancoc;
 
-import com.israelvivancoc.model.DataPoint; // Import necesario
+import com.israelvivancoc.model.DataPoint;
 import com.israelvivancoc.service.BanxicoService;
-import com.israelvivancoc.util.CsvExporter; // Import necesario
+import com.israelvivancoc.util.CsvExporter;
+import com.israelvivancoc.util.CurrencyConverter; // Nuestro nuevo import
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
@@ -11,18 +12,19 @@ public class Main {
         String token = dotenv.get("BANXICO_TOKEN");
 
         if (token == null || token.isEmpty()) {
-            System.out.println(" ERROR: No se pudo encontrar el BANXICO_TOKEN en tu archivo .env");
+            System.out.println(" ERROR: No se pudo encontrar el BANXICO_TOKEN");
         } else {
             System.out.println(" SUCCESS! Your .env file is connected.");
 
             BanxicoService service = new BanxicoService(token);
-
-            // Capturamos el resultado del servicio
             DataPoint todayData = service.fetchExchangeRate();
 
-            // Si se obtienen datos, los guardamos en el CSV
             if (todayData != null) {
+                // Guarda el historial
                 CsvExporter.exportToCsv(todayData, "banxico_history.csv");
+
+                // Interacción con el usuario
+                CurrencyConverter.showConversionMenu(todayData);
             }
         }
     }

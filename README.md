@@ -2,20 +2,22 @@
 
 A Java application that tracks the official USD to MXN exchange rate (FIX) in real-time using the **Bank of Mexico (Banxico) API**.
 
-##  Features
+## 🚀 Features
 * **Real-time Data:** Fetches the latest official exchange rate.
+* **Data Persistence:** Automatically exports and appends results to a `banxico_history.csv` file for historical analysis.
 * **Secure:** Uses environment variables (`.env`) to manage API tokens.
-* **Clean Architecture:** Built with a modular structure (Service, Model, and Main layers).
+* **Clean Architecture:** Built with a modular structure (Service, Model, Utility, and Main layers) using a Return-based data flow.
 * **JSON Parsing:** Utilizes Jackson for efficient data mapping.
 * **Unit Testing:** Includes a test suite powered by JUnit 5 to ensure data integrity.
+* **Interactive Currency Converter:** Built-in tool to convert MXN to USD instantly using the live rate.
 
-
-##  Technologies
+## 🛠️ Technologies
 * **Java 17+**
 * **Maven** (Dependency Management)
 * **Jackson** (JSON Processing)
 * **Java Dotenv** (Environment Variable Management)
 * **JUnit 5** (Unit Testing Framework)
+* **Java I/O & Scanner:** Try-with-resources for CSV persistence and Scanner for interactive user input.)
 
 
 ##  Setup
@@ -36,8 +38,7 @@ A Java application that tracks the official USD to MXN exchange rate (FIX) in re
     BANXICO_TOKEN=your_token_here
     ```
 
-4.  **Run the application:**
-    Use your IDE (IntelliJ) or Maven to run the `Main` class.
+4. **Run the application:** Use your IDE (IntelliJ) or Maven to run the `Main` class. **Follow the on-screen prompts** in the console to use the currency converter.
 
  ## Testing
 To run the automated test suite, you can use either the Maven CLI or your IDE:
