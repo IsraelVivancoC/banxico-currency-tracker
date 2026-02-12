@@ -33,7 +33,7 @@ public class Main {
                     double difference = currentRate - lastRate;
                     // Ternario para emojis y texto de tendencia
                     String trendEmoji = (difference >= 0) ? " UP" : " DOWN";
-                    System.out.printf("Last saved rate:     $%.4f%n", lastRate);
+                    System.out.printf("Yesterday's rate:     $%.4f%n", lastRate);
                     System.out.printf("Trend:               %s (%+.4f)%n", trendEmoji, difference);
                 } else {
                     System.out.println("No previous historical data available for comparison.");

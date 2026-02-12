@@ -19,7 +19,7 @@ public class BanxicoService {
         this.mapper = new ObjectMapper();
     }
 
-    // CAMBIO: Ahora devuelve un DataPoint en lugar de ser void
+    // Devuelve un DataPoint en lugar de ser void
     public DataPoint fetchExchangeRate() {
         String url = "https://www.banxico.org.mx/SieAPIRest/service/v1/series/SF43718/datos/oportuno";
 
