@@ -2,7 +2,7 @@ package com.israelvivancoc;
 
 import com.israelvivancoc.model.DataPoint;
 import com.israelvivancoc.service.BanxicoService;
-import com.israelvivancoc.service.HistoryService; // Nuevo import
+import com.israelvivancoc.service.HistoryService;
 import com.israelvivancoc.util.CsvExporter;
 import com.israelvivancoc.util.CurrencyConverter;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -21,26 +21,29 @@ public class Main {
             DataPoint todayData = service.fetchExchangeRate();
 
             if (todayData != null) {
-                // 1. PEDIMOS EL PRECIO ANTERIOR (Antes de guardar el nuevo)
-                Double lastRate = HistoryService.getLastSavedRate("banxico_history.csv");
+                // OBTENER PRECIO ANTERIOR (Esto ignorando los registros de hoy)
+                Double lastRate = HistoryService.getLastSavedRate("banxico_history.csv", todayData.getFecha());
                 double currentRate = Double.parseDouble(todayData.getDato());
 
-                // COMPARATIVA
-                System.out.println(" --- MARKET COMPARISON ---");
+                //  COMPARATIVA
+                System.out.println("\n --- MARKET COMPARISON ---");
+                System.out.println("Official Rate Today: $" + currentRate);
+
                 if (lastRate != null) {
                     double difference = currentRate - lastRate;
-                    String trend = (difference >= 0) ? " UP (+" : " DOWN (";
-                    System.out.printf("Last saved rate: $%.4f%n", lastRate);
-                    System.out.printf("Trend: %s%.4f) compared to last record.%n", trend, difference);
+                    // Ternario para emojis y texto de tendencia
+                    String trendEmoji = (difference >= 0) ? " UP" : " DOWN";
+                    System.out.printf("Last saved rate:     $%.4f%n", lastRate);
+                    System.out.printf("Trend:               %s (%+.4f)%n", trendEmoji, difference);
                 } else {
-                    System.out.println("No historical data found to compare.");
+                    System.out.println("No previous historical data available for comparison.");
                 }
                 System.out.println("-----------------------------\n");
 
-                // GUARDA HISTORIAL
+                // GUARDAR HISTORIAL
                 CsvExporter.exportToCsv(todayData, "banxico_history.csv");
 
-                // 4. CONVERSOR
+                //  CONVERSOR INTERACTIVO
                 CurrencyConverter.showConversionMenu(todayData);
             }
         }

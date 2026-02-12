@@ -6,24 +6,23 @@ import java.io.IOException;
 
 public class HistoryService {
 
-    public static Double getLastSavedRate(String fileName) {
-        String lastLine = "";
+    public static Double getLastSavedRate(String fileName, String todayDate) {
+        String lastDifferentRate = null;
         String currentLine;
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             while ((currentLine = br.readLine()) != null) {
-                lastLine = currentLine; // Al final del ciclo, tendremos la última línea
+                String[] data = currentLine.split(",");
+                // Si la fecha de la línea es distinta a la de hoy, la guardamos
+                if (data.length >= 2 && !data[0].equals(todayDate)) {
+                    lastDifferentRate = data[1];
+                }
             }
 
-            if (!lastLine.isEmpty()) {
-                // El CSV es: fecha,precio -> split(",")[1] nos da el precio
-                String[] data = lastLine.split(",");
-                return Double.parseDouble(data[1]);
-            }
+            return (lastDifferentRate != null) ? Double.parseDouble(lastDifferentRate) : null;
+
         } catch (IOException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            // Si el archivo no existe o está vacío, simplemente devolvemos null
             return null;
         }
-        return null;
     }
 }
